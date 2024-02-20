@@ -32,6 +32,7 @@ export default function RegisterForm() {
 
                         option: {
                             data: {
+                                role: email == 'admin@example.com' ? 'admin' : 'member',
                                 name: name,
                                 phone: phone,
                             }
