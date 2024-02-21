@@ -1,19 +1,44 @@
 'use client'
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-export default function FeaturesForm({feature}) {
-
+export default function FeaturesForm({id}) {
+    let [loding, setLoding] = useState(false);
+    let [features, setFeatures] = useState({});
     const router = useRouter()
     const supabase = createClientComponentClient()
+
+    useEffect(()=>{
+        const getFeatures = async () => {
+
+            setLoding(true);
+
+            const { data, error } = await supabase
+            .from('features')
+            .select('*')
+            .single();
+
+            if (error) throw (error);
+
+            setFeatures(data);
+            setLoding(false);
+
+          };
+
+          id && getFeatures();
+    }, [id]);
+
+
 
     return (
         <>
             <div>
                 <Formik
+                enableReinitialize={true}
                     initialValues={{
                         id: feature?.id,
                         icon: feature?.icon,
@@ -50,7 +75,7 @@ export default function FeaturesForm({feature}) {
                     }}
                 >
                     {(props) => (
-                        <Form>
+                        <Form className={classNames({"app-loding": loding})}>
                             <div>
                                 <label className="form-control w-full">
                                     <div className="label">
@@ -101,7 +126,7 @@ export default function FeaturesForm({feature}) {
                             </div>
 
                             <div className="form-control w-full pt-3">
-                                <button type="submit" className={props.isSubmitting ? 'app-loading btn btn-primary' : '' + 'btn btn-primary'}>Submit</button>
+                                <button type="submit" className={classNames({"app-loding": props.isSubmitting ? 'app-loading btn btn-primary' : '' + 'btn btn-primary'})}>Submit</button>
                             </div>
 
                             <div>

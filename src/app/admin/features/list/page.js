@@ -1,11 +1,10 @@
-import Logout from "@/components/Auth/Logout";
-import BackendMenu from "@/components/Layout/BackendMenu";
 import Layout from "@/components/Layout/Layout";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from 'next/headers';
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import FeaturesDelete from "../components/FeaturesDelete";
+import LayoutAuth from "@/components/Layout/LayoutAuth";
+import FeaturesTable from "../components/FeaturesTable";
 
 export const metadata = {
     title: "Features List",
@@ -23,81 +22,34 @@ export default async function List() {
         return redirect("/login");
     }
 
-    const { data, error } = await supabase
-    .from('features')
-    .select('*')
-    .order('id', {ascending: false});
+    // const { data, error } = await supabase
+    //     .from('features')
+    //     .select('*')
+    //     .order('id', { ascending: false });
 
-  if(error) throw (error);
+    // if (error) throw (error);
 
-  let features = data;
+    // let features = data;
 
     return (
         <>
             <Layout>
                 <section className="blog-section">
                     <div className="container mx-auto p-4 mt-5">
-                        <div className="text-center text-5xl font-bold mb-16 text-blue-500">Dashboard </div>
-                        <div className="text-sm breadcrumbs mb-3">
-                            <ul>
-                                <li>
-                                    <Link href={"/"}>Dashboard</Link>
-                                </li>
-                                <li>Logout</li>
-                            </ul>
-                        </div>
                         <div className="flex justify-center gap-3">
-                            <div className="w-full md:w-3/12">
-                                <div className="card shadow">
-                                    <div className="card-body">
-                                        <div className="card-title text-2xl font-bold">
-                                            Dashboard
-                                        </div>
-                                        <BackendMenu />
+
+                            <LayoutAuth>
+
+                                <div className="flex justify-between item-center">
+                                    <div className="card-title">Features</div>
+                                    <div className="">
+                                        <Link href={"/admin/features/create"} className="btn btn-primary">Add New</Link>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="w-full md:w-9/12">
-                                <div className="card shadow">
-                                    <div className="card-body">
-                                        <div className="flex justify-between item-center">
-                                            <div className="card-title">Features</div>
-                                            <div className="">
-                                                <Link href={"/admin/features/create"} className="btn btn-primary">Action</Link>
-                                            </div>
-                                        </div>
-                                        <div className="overflow-x-auto">
-                                            <table className="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>SL</th>
-                                                        <th>Icon</th>
-                                                        <th>Name</th>
-                                                        <th>description</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {features.map((feature, index) => (
-                                                        <tr>
-                                                            <th>{index + 1}</th>
-                                                            <td><i className={`${feature.icon } text-2xl`}> </i></td>
-                                                            <td>{feature.name}</td>
-                                                            <td>{feature.description}</td>
-                                                            <td className="flex gap-2">
-                                                                <Link href={`/admin/features/edit/${feature.id}`} className="btn btn-info">Edit</Link>
-                                                                <FeaturesDelete id={feature.id}/>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                <div className="overflow-x-auto">
+                                    <FeaturesTable />
                                 </div>
-                            </div>
+                            </LayoutAuth>
                         </div>
                     </div>
                 </section>

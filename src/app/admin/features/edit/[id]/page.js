@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import FeaturesForm from "../../components/FeaturesForm";
+import LayoutAuth from "@/components/Layout/LayoutAuth";
 
 export const metadata = {
     title: "Features Create",
@@ -13,7 +14,7 @@ export const metadata = {
 };
 
 
-export default async function Edit({params}) {
+export default async function Edit({ params }) {
 
     const supabase = createServerComponentClient({ cookies });
 
@@ -23,14 +24,14 @@ export default async function Edit({params}) {
         return redirect("/login");
     }
 
-    const { data, error } = await supabase
-    .from('features')
-    .select('*')
-    .eq('id', params.id);
+    // const { data, error } = await supabase
+    //     .from('features')
+    //     .select('*')
+    //     .eq('id', params.id);
 
-  if(error) throw (error);
+    // if (error) throw (error);
 
-  let feature = data[0] ?? {};
+    // let feature = data[0] ?? {};
 
     return (
         <>
@@ -47,30 +48,19 @@ export default async function Edit({params}) {
                             </ul>
                         </div>
                         <div className="flex justify-center gap-3">
-                            <div className="w-full md:w-3/12">
-                                <div className="card shadow">
-                                    <div className="card-body">
-                                        <div className="card-title text-2xl font-bold">
-                                            Dashboard
+                            <LayoutAuth>
+                                <div>
+                                    <div className="flex justify-between item-center">
+                                        <div className="card-title">Edit Features</div>
+                                        <div className="">
+                                            <Link href={"/admin/features/list"} className="btn btn-success">Cencel</Link>
                                         </div>
-                                        <BackendMenu />
+                                    </div>
+                                    <div>
+                                        <FeaturesForm id={params.id} />
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="w-full md:w-9/12">
-                                <div className="card shadow">
-                                    <div className="card-body">
-                                        <div className="flex justify-between item-center">
-                                            <div className="card-title">Edit Features - {params.id}</div>
-                                            <div className="">
-                                                <Link href={"/admin/features/list"} className="btn btn-success">Cencel</Link>
-                                            </div>
-                                        </div>
-                                        <FeaturesForm  feature={feature}/>
-                                    </div>
-                                </div>
-                            </div>
+                            </LayoutAuth>
                         </div>
                     </div>
                 </section>

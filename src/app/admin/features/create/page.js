@@ -1,4 +1,3 @@
-import Logout from "@/components/Auth/Logout";
 import BackendMenu from "@/components/Layout/BackendMenu";
 import Layout from "@/components/Layout/Layout";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";

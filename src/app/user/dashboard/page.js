@@ -31,9 +31,9 @@ export default async function Dashboard() {
                         <div className="text-sm breadcrumbs mb-3">
                             <ul>
                                 <li>
-                                    <Link href={"/"}>Dashboard</Link>
+                                    <Link href={"/"}>Home</Link>
                                 </li>
-                                <li>Logout</li>
+                                <li>Dashboard</li>
                             </ul>
                         </div>
                         <div className="flex justify-center gap-3">
@@ -43,7 +43,7 @@ export default async function Dashboard() {
                                         <div className="card-title text-2xl font-bold">
                                             Dashboard
                                         </div>
-                                            <BackendMenu />
+                                        <BackendMenu />
                                     </div>
                                 </div>
                             </div>
