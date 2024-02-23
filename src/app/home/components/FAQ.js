@@ -1,24 +1,42 @@
-export default function FAQ()
-{
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from 'next/headers';
 
-    let faqs = [
-        {
-            question:"Focus me to see content",
-            answer:"tabIndex={0} attribute is necessary to make the div focusable",
-        },
-        {
-            question:"Focus me to see content",
-            answer:"tabIndex={0} attribute is necessary to make the div focusable",
-        },
-        {
-            question:"Focus me to see content",
-            answer:"tabIndex={0} attribute is necessary to make the div focusable",
-        },
-        {
-            question:"Focus me to see content",
-            answer:"tabIndex={0} attribute is necessary to make the div focusable",
-        },
-    ];
+async function getData() {
+
+    const supabase = createServerComponentClient({ cookies });
+
+    const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .order('id', { ascending: true });
+
+    if (error) throw (error);
+
+    return data;
+}
+
+export default async function FAQ()
+{
+    let faqs = await getData();
+
+    // let faqs = [
+    //     {
+    //         question:"Focus me to see content",
+    //         answer:"tabIndex={0} attribute is necessary to make the div focusable",
+    //     },
+    //     {
+    //         question:"Focus me to see content",
+    //         answer:"tabIndex={0} attribute is necessary to make the div focusable",
+    //     },
+    //     {
+    //         question:"Focus me to see content",
+    //         answer:"tabIndex={0} attribute is necessary to make the div focusable",
+    //     },
+    //     {
+    //         question:"Focus me to see content",
+    //         answer:"tabIndex={0} attribute is necessary to make the div focusable",
+    //     },
+    // ];
     return(
         <>
             <section className="about-section">

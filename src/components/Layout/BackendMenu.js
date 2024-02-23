@@ -13,11 +13,10 @@ export default async function BackendMenu() {
              <ul className="menu">
                 <li><Link href={"/"}>Dashboard</Link></li>
                 <li><Link href={"/admin/features/list"}>Features</Link></li>
-                <li><a>Features</a></li>
-                <li><a>How It Works</a></li>
+                <li><Link href={"/admin/how-it-works/list"}>How It Works</Link></li>
+                <li><Link href={"/admin/faqs/list"}>FAQ</Link></li>
                 <li><a>Blog</a></li>
                 <li><a>Contact</a></li>
-                <li><a>FAQ</a></li>
             </ul>
         </>
 

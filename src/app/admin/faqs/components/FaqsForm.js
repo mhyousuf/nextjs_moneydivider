@@ -7,32 +7,32 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function FeaturesForm({ id }) {
+export default function FaqsForm({ id }) {
     let [loding, setLoding] = useState(false);
-    let [features, setFeatures] = useState({});
+    let [faq, setFaq] = useState({});
     const router = useRouter()
     const supabase = createClientComponentClient()
 
     useEffect(() => {
-        const getFeatures = async () => {
+        const getFaq = async () => {
 
             setLoding(true);
 
             const { data, error } = await supabase
-                .from('features')
+                .from('faqs')
                 .select('*')
                 .eq('id', id)
                 .single();
 
             if (error) throw (error);
 
-            setFeatures(data);
+            setFaq(data);
 
             setLoding(false);
 
         };
 
-        id && getFeatures();
+        id && getFaq();
     }, [id]);
 
 
@@ -43,29 +43,27 @@ export default function FeaturesForm({ id }) {
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
-                        id: features?.id,
-                        icon: features?.icon,
-                        name: features?.name,
-                        description: features?.description,
+                        id: faq?.id,
+                        question: faq?.question,
+                        answer: faq?.answer,
                     }}
                     onSubmit={async (values, actions) => {
                         let id = values.id;
-                        let icon = values.icon;
-                        let name = values.name;
-                        let description = values.description;
+                        let question = values.question;
+                        let answer = values.answer;
 
                         if (id) {
                             const { error } = await supabase
-                                .from('features')
-                                .update({ icon: icon, name: name, description: description, updated_at: new Date() })
+                                .from('faqs')
+                                .update({ question: question, answer: answer, updated_at: new Date() })
                                 .eq('id', id);
 
                             if (error) throw (error);
 
                         } else {
                             const { error } = await supabase
-                                .from('features')
-                                .insert({ icon: icon, name: name, description: description });
+                                .from('faqs')
+                                .insert({ question: question, answer: answer });
 
                             if (error) throw (error);
 
@@ -73,7 +71,7 @@ export default function FeaturesForm({ id }) {
 
                         actions.setSubmitting(false);
 
-                        router.push("/admin/features/list");
+                        router.push("/admin/faqs/list");
                     }}
                 >
                     {(props) => (
@@ -81,13 +79,13 @@ export default function FeaturesForm({ id }) {
                             <div>
                                 <label className="form-control w-full">
                                     <div className="label">
-                                        <span className="label-text font-bold">Icon</span>
+                                        <span className="label-text font-bold">Question</span>
                                     </div>
                                     <Field
                                         type="Text"
-                                        name="icon"
-                                        id="icon"
-                                        placeholder="Enter Your icon"
+                                        name="question"
+                                        id="question"
+                                        placeholder="Enter Your question"
                                         className="input input-bordered w-full"
                                         required
                                     />
@@ -97,31 +95,14 @@ export default function FeaturesForm({ id }) {
                             <div>
                                 <label className="form-control w-full">
                                     <div className="label">
-                                        <span className="label-text font-bold">Name</span>
+                                        <span className="label-text font-bold">Answer</span>
                                     </div>
                                     <Field
                                         type="text"
-                                        name="name"
-                                        id="name"
-                                        placeholder="Enter Your name"
+                                        name="answer"
+                                        id="answer"
+                                        placeholder="Enter Your answer"
                                         className="input input-bordered w-full"
-                                        required
-                                    />
-                                </label>
-                            </div>
-
-                            <div>
-                                <label className="form-control w-full">
-                                    <div className="label">
-                                        <span className="label-text font-bold">Description</span>
-                                    </div>
-                                    <Field
-                                        as="textarea"
-                                        type="text"
-                                        name="description"
-                                        id="description"
-                                        placeholder="Enter Your description"
-                                        className="textarea input input-bordered w-full"
                                         required
                                     />
                                 </label>

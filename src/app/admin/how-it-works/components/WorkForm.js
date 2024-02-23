@@ -9,30 +9,30 @@ import { useEffect, useState } from 'react';
 
 export default function FeaturesForm({ id }) {
     let [loding, setLoding] = useState(false);
-    let [features, setFeatures] = useState({});
+    let [work, setWork] = useState({});
     const router = useRouter()
     const supabase = createClientComponentClient()
 
     useEffect(() => {
-        const getFeatures = async () => {
+        const getWork = async () => {
 
             setLoding(true);
 
             const { data, error } = await supabase
-                .from('features')
+                .from('works')
                 .select('*')
                 .eq('id', id)
                 .single();
 
             if (error) throw (error);
 
-            setFeatures(data);
+            setWork(data);
 
             setLoding(false);
 
         };
 
-        id && getFeatures();
+        id && getWork();
     }, [id]);
 
 
@@ -43,10 +43,10 @@ export default function FeaturesForm({ id }) {
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
-                        id: features?.id,
-                        icon: features?.icon,
-                        name: features?.name,
-                        description: features?.description,
+                        id: work?.id,
+                        icon: work?.icon,
+                        name: work?.name,
+                        description: work?.description,
                     }}
                     onSubmit={async (values, actions) => {
                         let id = values.id;
@@ -56,7 +56,7 @@ export default function FeaturesForm({ id }) {
 
                         if (id) {
                             const { error } = await supabase
-                                .from('features')
+                                .from('works')
                                 .update({ icon: icon, name: name, description: description, updated_at: new Date() })
                                 .eq('id', id);
 
@@ -64,7 +64,7 @@ export default function FeaturesForm({ id }) {
 
                         } else {
                             const { error } = await supabase
-                                .from('features')
+                                .from('works')
                                 .insert({ icon: icon, name: name, description: description });
 
                             if (error) throw (error);
@@ -73,7 +73,7 @@ export default function FeaturesForm({ id }) {
 
                         actions.setSubmitting(false);
 
-                        router.push("/admin/features/list");
+                        router.push("/admin/how-it-works/list");
                     }}
                 >
                     {(props) => (
@@ -128,7 +128,7 @@ export default function FeaturesForm({ id }) {
                             </div>
 
                             <div className="form-control w-full pt-3">
-                                <button type="submit" className={classNames({ "app-loding": props.isSubmitting, 'btn btn-primary': true })}>Submit</button>
+                                <button type="submit" className={classNames({"app-loding": props.isSubmitting, 'btn btn-primary': true})}>Submit</button>
                             </div>
 
                             <div className='pt-3'>
